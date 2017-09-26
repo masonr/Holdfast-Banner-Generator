@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Holdfast: Nations at War Server Banner Generator</title>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type">
+    <meta charset="UTF-8">
+    <meta name="description" content="Generate Holdfast: Nations At War server banners">
+    <meta name="keywords" content="Holdfast,Nations At War,Server,Banner">
+    <meta name="author" content="Mason Rowe">
+    <link href="css.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <div class="container">
+        <form action="" id="generate" method="post" name="generate">
+            <h1>Holdfast: Nations At War <br /> Server Banner Generator</h1>
+            <h2>Enter the server information below!</h2>
+            <fieldset>
+                <input autofocus="" id="server_ip" placeholder="Server IP (i.e. 66.70.135.240)" required="" tabindex="1" type="text">
+            </fieldset>
+            <fieldset>
+                <input id="server_port" placeholder="Steam Query Port (i.e. 27001)" required="" tabindex="2" type="text">
+            </fieldset>
+            <fieldset>
+		<p>Background Image <a href="images.html" style="float:right;">(View all background options)</a></p>
+                <select id="banner" name="banner">
+                    <option value="battlefield_map">
+                        Battlefield Map
+                    </option>
+                    <option value="british_advance">
+                        British Advance
+                    </option>
+                    <option value="british_march">
+                        British March
+                    </option>
+                    <option value="cavalry">
+                        Cavalry Line
+                    </option>
+                    <option value="nw_french">
+                        French Charge
+                    </option>
+                    <option value="french_march">
+                        French March
+                    </option>
+                    <option value="borodino">
+                        French Troops In Battle
+                    </option>
+                    <option value="french_winter">
+                        French Troops In Winter
+                    </option>
+                    <option value="line_charge">
+                        Line Charge
+                    </option>
+                    <option value="line_troops">
+                        Line Infantry
+                    </option>
+                    <option value="naval_battle">
+                        Naval Battle 1
+                    </option>
+                    <option value="naval_battle2">
+                        Naval Battle 2
+                    </option>
+                    <option value="naval_battle3">
+                        Naval Battle 3
+                    </option>
+                    <option value="blockade">
+                        Naval Blockade
+                    </option>
+                    <option value="naval_engagement">
+                        Naval Engagement
+                    </option>
+                </select>
+            </fieldset>
+	    <fieldset>
+		<p>Label Text Color</p>
+		<select id="label" name="label">
+		   <option value="black">
+			Black (default)
+		   </option>
+                   <option value="white">
+			White 
+                   </option>
+                   <option value="blue">
+                        Blue
+                   </option>
+                   <option value="red">
+                        Red
+                   </option>
+                   <option value="green">
+                        Green
+                   </option>
+                   <option value="yellow">
+                        Yellow
+                   </option>
+		</select>
+	    </fieldset>
+            <fieldset>
+                <input id="site_link" placeholder="(Optional) Link to website, starts with http://" tabindex="3" type="url">
+            </fieldset>
+            <fieldset>
+                <button id="submit" name="submit" onclick="return createBanner(); return false;" type="button">Submit</button>
+            </fieldset>
+            <fieldset>
+                <button id="clear" name="clear" onclick="return clearForm(); return false;" type="button">Clear</button>
+            </fieldset>
+            <fieldset>
+                <p>HTML Code</p>
+                <textarea id="html_code" onclick="this.select();" placeholder="HTML Code will populate here." readonly="readonly"></textarea>
+            </fieldset>
+            <fieldset>
+                <p>Forum (BB) / TeamSpeak Code</p>
+                <textarea id="forum_code" onclick="this.select();" placeholder="Forum (BB) Code will populate here." readonly="readonly"></textarea>
+            </fieldset>
+            <fieldset id="preview">
+                <p>Preview Image</p>
+                <p style="font-size: 10px;line-height: 10px;padding-bottom: 5px;">(May take a few seconds to load. Max connection time of 5 seconds to reach server before returning error.)</p><img id="preview_image" src="images/preview.png">
+            </fieldset>
+            <fieldset>
+                <p>Direct Image Link</p><input id="image_link" onclick="this.select();" placeholder="Image link will populate here." readonly="readonly" type="text">
+            </fieldset>
+            <p style="text-align: center;">Created by Mason Rowe (Hadrian)</p>
+            <p style="text-align: center;">Source code: <a href="https://github.com/masonr/Holdfast-Banner-Generator" target="_blank">github.com/masonr/Holdfast-Banner-Generator</a></p>
+        </form>
+    </div>
+    <script>
+    function createBanner() {
+       ip = document.getElementById('server_ip').value;
+       port = Number(document.getElementById('server_port').value);
+       banner = document.getElementById('banner').value;
+       label = document.getElementById('label').value;
+       if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ip)) {  
+           if (Number.isInteger(port) && port > 0 && port < 65535) {
+               link = document.getElementById('site_link').value;
+               if (link == "") {
+                   // html code block
+                   document.getElementById("html_code").value = '<img src="https://holdfastbanner.masonrowe.com/banner.py?ip=' + ip + '&port=' + port + '&banner=' + banner + '&label=' + label + '">';
+
+                   // forum bb code block
+                   document.getElementById("forum_code").value = '[img]' + 'https://holdfastbanner.masonrowe.com/banner.py?ip=' + ip + '&port=' + port + '&banner=' + banner + '&label=' + label + '[/img]';
+
+                   
+               } else {
+                   // html code block
+                   document.getElementById("html_code").value = '<a href="' + link + '"><img src="https://holdfastbanner.masonrowe.com/banner.py?ip=' + ip + '&port=' + port + '&banner=' + banner + '&label=' + label + '"><\/a>';
+
+                   // forum bb code block
+                   document.getElementById("forum_code").value = '[url=' + link + '][img]' + 'https://holdfastbanner.masonrowe.com/banner.py?ip=' + ip + '&port=' + port + '&banner=' + banner + '&label=' + label + '[/img][/url]';
+                   
+               }
+               // preview image
+               document.getElementById("preview_image").src = 'https://holdfastbanner.masonrowe.com/banner.py?ip=' + ip + '&port=' + port + '&banner=' + banner + '&label=' + label;
+
+               // direct image link
+               document.getElementById("image_link").value = 'https://holdfastbanner.masonrowe.com/banner.py?ip=' + ip + '&port=' + port + '&banner=' + banner + '&label=' + label;
+
+           } else {
+               alert("Port Number is invalid! Try again.");
+           }
+       } else {
+           alert("IP Address is invalid! Try again.");
+       }  
+    }
+    function clearForm() {
+       document.getElementById("server_ip").value = "";
+       document.getElementById("server_port").value = "";
+       document.getElementById("site_link").value = "";
+       document.getElementById("html_code").value = "";
+       document.getElementById("forum_code").value = "";
+       document.getElementById("preview_image").src = "images/preview.png";
+       document.getElementById("image_link").value = "";
+    }
+    </script> 
+</body>
+</html>
